@@ -1,6 +1,7 @@
 import {
   For,
   createEffect,
+  createMemo,
   createSignal,
   onMount,
   type Component,
@@ -33,26 +34,6 @@ const App: Component = () => {
     cols: 4,
     fontSize: "8pt",
     profiles: [],
-  });
-
-  onMount(() => {
-    // Deserialize the options store from local storage.
-    const storedOptions = localStorage.getItem("options");
-    if (!storedOptions) {
-      return;
-    }
-
-    setOptions(JSON.parse(storedOptions));
-
-    if (options.profiles.length > 0) {
-      setCurrentProfile(options.profiles[0]);
-      setCellText(options.profiles[0].content);
-    }
-  });
-
-  createEffect(() => {
-    // Serialize the options store to local storage.
-    localStorage.setItem("options", JSON.stringify(options));
   });
 
   const saveProfile = () => {
@@ -116,13 +97,39 @@ const App: Component = () => {
     const today = new Date();
     const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1);
-    const formattedToday = `${today.getDate()}.${today.getMonth()}.${today.getFullYear()}`;
-    const formattedTomorrow = `${tomorrow.getDate()}.${tomorrow.getMonth()}.${tomorrow.getFullYear()}`;
+    const formattedToday = `${today.getDate()}.${
+      today.getMonth() + 1
+    }.${today.getFullYear()}`;
+    const formattedTomorrow = `${tomorrow.getDate()}.${
+      tomorrow.getMonth() + 1
+    }.${tomorrow.getFullYear()}`;
 
     return content
       .replace("$today", formattedToday)
       .replace("$tomorrow", formattedTomorrow);
   };
+
+  const displayContent = createMemo(() => preprocessContent(cellText()));
+
+  onMount(() => {
+    // Deserialize the options store from local storage.
+    const storedOptions = localStorage.getItem("options");
+    if (!storedOptions) {
+      return;
+    }
+
+    setOptions(JSON.parse(storedOptions));
+
+    if (options.profiles.length > 0) {
+      setCurrentProfile(options.profiles[0]);
+      setCellText(options.profiles[0].content);
+    }
+  });
+
+  createEffect(() => {
+    // Serialize the options store to local storage.
+    localStorage.setItem("options", JSON.stringify(options));
+  });
 
   return (
     <div>
@@ -243,6 +250,7 @@ const App: Component = () => {
                   fill="#0F0F0F"
                 />
               </svg>
+              <span>Sterge profil</span>
             </button>
             <button
               classList={{
@@ -323,6 +331,7 @@ const App: Component = () => {
 	c-7.604,0-13.767,6.164-13.767,13.767C165.316,99.086,171.479,105.25,179.083,105.25z"
                 />
               </svg>
+              <span>Modifica profil</span>
             </button>
             <button classList={{ hide: isEditing() }} onclick={saveProfile}>
               <svg
@@ -361,12 +370,9 @@ const App: Component = () => {
                   fill="#FFFFFF"
                 />
               </svg>
+              <span>Salveaza profil</span>
             </button>
-            <button
-              onClick={() => {
-                print();
-              }}
-            >
+            <button onClick={print}>
               <svg
                 width="800px"
                 height="800px"
@@ -409,6 +415,7 @@ const App: Component = () => {
                   fill="#1976D2"
                 />
               </svg>
+              <span>Print</span>
             </button>
           </div>
         </div>
@@ -431,7 +438,7 @@ const App: Component = () => {
                 <For each={row}>
                   {(cell, columnIndex) => (
                     <td>
-                      <span class="cell">{preprocessContent(cellText())}</span>
+                      <span class="cell">{displayContent()}</span>
                     </td>
                   )}
                 </For>
