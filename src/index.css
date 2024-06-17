@@ -19,7 +19,7 @@ table, th, td {
 .cell {
     display: flex;
     flex-wrap: wrap;
-    padding: 3px;
+    padding: 7px;
 
     width: 4.65cm;
 }
@@ -149,7 +149,7 @@ textarea, select, label {
         padding: 0;
     }
 
-    .panel {
+    .panel, .download-area {
         display: none;
     }
 
