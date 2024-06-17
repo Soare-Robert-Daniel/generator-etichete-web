@@ -50,7 +50,7 @@ table, th, td {
 .options {
     display: grid;
     grid-template-columns: auto auto;
-    gap: 5px;
+    gap: 10px;
     justify-items: end;
 }
 
@@ -121,11 +121,14 @@ textarea, select, label {
     cursor: pointer;
 }
 
-.actions.download-area {
+.download-area {
+    margin: 15px auto;
+    display: flex;
     align-items: flex-end;
+    justify-content: center;
 
     padding: 5px;
-    border: 2px dashed var(--btn-filled-background);
+    gap: 10px;
 }
 
 @media print {

@@ -449,29 +449,6 @@ const App: Component = () => {
               <span>Print</span>
             </button>
           </div>
-          <div class="actions download-area">
-            <button class="btn-filled" onClick={downloadProfileAsJson}>
-              Descarca Profil
-            </button>
-            <div class="file-upload-area">
-              <input type="file" />
-              <button
-                class="btn-filled"
-                onClick={() => {
-                  const fileInput = document.querySelector(
-                    "input[type=file]"
-                  ) as HTMLInputElement;
-                  if (fileInput.files && fileInput.files.length > 0) {
-                    uploadProfiles(fileInput.files[0]);
-                  } else {
-                    alert("Va rugam sa selectati un fisier pentru incarcare.");
-                  }
-                }}
-              >
-                Incarca Profil
-              </button>
-            </div>
-          </div>
         </div>
         <textarea
           cols={50}
@@ -501,6 +478,29 @@ const App: Component = () => {
           </For>
         </tbody>
       </table>
+      <div class="download-area">
+        <button class="btn-filled" onClick={downloadProfileAsJson}>
+          Descarca Profil
+        </button>
+        <div class="file-upload-area">
+          <input type="file" />
+          <button
+            class="btn-filled"
+            onClick={() => {
+              const fileInput = document.querySelector(
+                "input[type=file]"
+              ) as HTMLInputElement;
+              if (fileInput.files && fileInput.files.length > 0) {
+                uploadProfiles(fileInput.files[0]);
+              } else {
+                alert("Va rugam sa selectati un fisier pentru incarcare.");
+              }
+            }}
+          >
+            Incarca Profil
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
