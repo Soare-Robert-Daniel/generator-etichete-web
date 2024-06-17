@@ -1,6 +1,8 @@
 :root {
     --shadow-elevation-medium: 0px 0px 22px -8px rgba(0,0,0,0.75);
     --cell-font-size: 8pt;
+    --btn-filled-color: white;
+    --btn-filled-background: #fc3737;
 }
 
 table {
@@ -49,6 +51,7 @@ table, th, td {
     display: grid;
     grid-template-columns: auto auto;
     gap: 5px;
+    justify-items: end;
 }
 
 select {
@@ -75,7 +78,7 @@ button svg {
     height: 2.5rem;
 }
 
-input {
+input[type="number"] {
     padding: 5px;
     border: unset;
     border-radius: 8px;
@@ -101,6 +104,28 @@ textarea, select, label {
 
 .hide {
     display: none;
+}
+
+.file-upload-area {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.btn-filled {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--btn-filled-background);
+    color: var(--btn-filled-color);
+    cursor: pointer;
+}
+
+.actions.download-area {
+    align-items: flex-end;
+
+    padding: 5px;
+    border: 2px dashed var(--btn-filled-background);
 }
 
 @media print {

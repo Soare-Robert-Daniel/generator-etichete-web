@@ -116,6 +116,32 @@ const App: Component = () => {
 
   const displayContent = createMemo(() => preprocessContent(cellText()));
 
+  const downloadProfileAsJson = () => {
+    const data = JSON.stringify(options.profiles);
+    const blob = new Blob([data], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "profiles.json";
+    a.click();
+
+    a.remove();
+  };
+
+  const uploadProfiles = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const content = e.target?.result as string;
+      try {
+        const profiles = JSON.parse(content);
+        setOptions("profiles", profiles);
+      } catch (e) {
+        alert("Fisierul incarcat nu este un fisier JSON valid.");
+      }
+    };
+    reader.readAsText(file);
+  };
+
   onMount(() => {
     // Deserialize the options store from local storage.
     const storedOptions = localStorage.getItem("options");
@@ -422,6 +448,29 @@ const App: Component = () => {
               </svg>
               <span>Print</span>
             </button>
+          </div>
+          <div class="actions download-area">
+            <button class="btn-filled" onClick={downloadProfileAsJson}>
+              Descarca Profil
+            </button>
+            <div class="file-upload-area">
+              <input type="file" />
+              <button
+                class="btn-filled"
+                onClick={() => {
+                  const fileInput = document.querySelector(
+                    "input[type=file]"
+                  ) as HTMLInputElement;
+                  if (fileInput.files && fileInput.files.length > 0) {
+                    uploadProfiles(fileInput.files[0]);
+                  } else {
+                    alert("Va rugam sa selectati un fisier pentru incarcare.");
+                  }
+                }}
+              >
+                Incarca Profil
+              </button>
+            </div>
           </div>
         </div>
         <textarea
