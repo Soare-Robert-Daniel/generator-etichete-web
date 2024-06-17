@@ -122,9 +122,13 @@ const App: Component = () => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "profiles.json";
-    a.click();
 
+    const date = new Date();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+    a.download = `profile-generator-etichete--${date.getFullYear()}_${month}_${day}.json`;
+
+    a.click();
     a.remove();
   };
 
