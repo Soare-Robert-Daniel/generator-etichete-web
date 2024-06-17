@@ -60,13 +60,16 @@ const App: Component = () => {
       return;
     }
 
-    const profile = options.profiles.find(
-      (profile) => profile.id === currentProfile().id
-    );
-    if (profile) {
-      profile.content = cellText();
-      setOptions("profiles", options.profiles);
-    }
+    const updatedProfiles = options.profiles.map((p) => {
+      if (p.id === currentProfile().id) {
+        return {
+          ...p,
+          content: cellText(),
+        };
+      }
+      return p;
+    });
+    setOptions("profiles", updatedProfiles);
   };
 
   const deleteCurrentProfile = () => {
@@ -95,8 +98,10 @@ const App: Component = () => {
 
   const preprocessContent = (content: string) => {
     const today = new Date();
+
     const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1);
+
     const formattedToday = `${today.getDate()}.${
       today.getMonth() + 1
     }.${today.getFullYear()}`;
@@ -372,7 +377,7 @@ const App: Component = () => {
               </svg>
               <span>Salveaza profil</span>
             </button>
-            <button onClick={print}>
+            <button onClick={() => print()}>
               <svg
                 width="800px"
                 height="800px"
