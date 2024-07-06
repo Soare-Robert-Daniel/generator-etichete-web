@@ -154,6 +154,7 @@ const App: Component = () => {
   onMount(() => {
     // Deserialize the options store from local storage.
     const rawStoredOptions = localStorage.getItem("options");
+
     if (!rawStoredOptions) {
       return;
     }
@@ -164,6 +165,7 @@ const App: Component = () => {
       setCurrentProfile(deserializedOptions.profiles[0]);
       setCellText(deserializedOptions.profiles[0].content);
     }
+
     setOptions(deserializedOptions);
   });
 
