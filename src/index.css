@@ -25,7 +25,7 @@ table, th, td {
 .cell {
     display: flex;
     flex-wrap: wrap;
-    padding: 7px;
+    padding: 5px;
 
     max-width: 5cm;
 }

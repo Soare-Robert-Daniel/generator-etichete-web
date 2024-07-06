@@ -102,9 +102,10 @@ const App: Component = () => {
     const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1);
 
-    const formattedToday = `${today.getDate()}.${
+    const paddedNumber = (n: number) => n.toString().padStart(2, "0");
+    const formattedToday = `${paddedNumber(today.getDate())}.${paddedNumber(
       today.getMonth() + 1
-    }.${today.getFullYear()}`;
+    )}.${today.getFullYear()}`;
     const formattedTomorrow = `${tomorrow.getDate()}.${
       tomorrow.getMonth() + 1
     }.${tomorrow.getFullYear()}`;
@@ -211,7 +212,8 @@ const App: Component = () => {
               Dimensiune font
               <input
                 type="number"
-                value={parseInt(options.fontSize)}
+                step="0.1"
+                value={parseFloat(options.fontSize)}
                 onInput={(e) => {
                   setOptions("fontSize", `${e.target.value}pt`);
                 }}
