@@ -32,6 +32,7 @@ table, th, td {
 
 .panel {
     display: flex;
+    flex-wrap: wrap;
     flex-direction: row;
     justify-content: center;
     gap: 10px;
@@ -67,7 +68,7 @@ select {
     background-color: #e5e5e5;
 }
 
-button {
+button:not(.default) {
     padding: 0;
     margin: 0;
     border: none;
@@ -77,6 +78,11 @@ button {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+button.tag-present {
+    background-color: green;
+    color: white;
 }
 
 button svg {

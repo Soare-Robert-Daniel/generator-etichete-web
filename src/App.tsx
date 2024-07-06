@@ -106,9 +106,9 @@ const App: Component = () => {
     const formattedToday = `${paddedNumber(today.getDate())}.${paddedNumber(
       today.getMonth() + 1
     )}.${today.getFullYear()}`;
-    const formattedTomorrow = `${tomorrow.getDate()}.${
-      tomorrow.getMonth() + 1
-    }.${tomorrow.getFullYear()}`;
+    const formattedTomorrow = `${paddedNumber(
+      tomorrow.getDate()
+    )}.${paddedNumber(tomorrow.getMonth() + 1)}.${tomorrow.getFullYear()}`;
 
     return content
       .replace("$today", formattedToday)
@@ -145,6 +145,10 @@ const App: Component = () => {
       }
     };
     reader.readAsText(file);
+  };
+
+  const insertTag = (tag: string) => {
+    setCellText((text) => `${text} ${tag}`);
   };
 
   onMount(() => {
@@ -466,6 +470,22 @@ const App: Component = () => {
         >
           {cellText()}
         </textarea>
+        <div class="container">
+          <button
+            class="default"
+            onclick={() => insertTag("$today")}
+            classList={{ "tag-present": cellText().includes("$today") }}
+          >
+            Data de astazi
+          </button>
+          <button
+            class="default"
+            classList={{ "tag-present": cellText().includes("$tomorrow") }}
+            onClick={() => insertTag("$tomorrow")}
+          >
+            Data de maine
+          </button>
+        </div>
       </div>
       <table style={{ "--cell-font-size": options.fontSize }}>
         <tbody>
