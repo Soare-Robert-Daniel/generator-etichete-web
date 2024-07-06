@@ -111,8 +111,8 @@ const App: Component = () => {
     )}.${paddedNumber(tomorrow.getMonth() + 1)}.${tomorrow.getFullYear()}`;
 
     return content
-      .replace("$today", formattedToday)
-      .replace("$tomorrow", formattedTomorrow);
+      .replace("$astazi", formattedToday)
+      .replace("$maine", formattedTomorrow);
   };
 
   const displayContent = createMemo(() => preprocessContent(cellText()));
@@ -153,17 +153,18 @@ const App: Component = () => {
 
   onMount(() => {
     // Deserialize the options store from local storage.
-    const storedOptions = localStorage.getItem("options");
-    if (!storedOptions) {
+    const rawStoredOptions = localStorage.getItem("options");
+    if (!rawStoredOptions) {
       return;
     }
 
-    setOptions(JSON.parse(storedOptions));
+    const deserializedOptions = JSON.parse(rawStoredOptions);
 
-    if (options.profiles.length > 0) {
-      setCurrentProfile(options.profiles[0]);
-      setCellText(options.profiles[0].content);
+    if (deserializedOptions.profiles.length > 0) {
+      setCurrentProfile(deserializedOptions.profiles[0]);
+      setCellText(deserializedOptions.profiles[0].content);
     }
+    setOptions(deserializedOptions);
   });
 
   createEffect(() => {
@@ -472,16 +473,21 @@ const App: Component = () => {
         </textarea>
         <div class="container">
           <button
-            class="default"
-            onclick={() => insertTag("$today")}
-            classList={{ "tag-present": cellText().includes("$today") }}
+            onclick={() => insertTag("$astazi")}
+            classList={{
+              default: true,
+              "tag-present": cellText().includes("$astazi"),
+            }}
           >
             Data de astazi
           </button>
           <button
             class="default"
-            classList={{ "tag-present": cellText().includes("$tomorrow") }}
-            onClick={() => insertTag("$tomorrow")}
+            classList={{
+              default: true,
+              "tag-present": cellText().includes("$maine"),
+            }}
+            onClick={() => insertTag("$maine")}
           >
             Data de maine
           </button>
