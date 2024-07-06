@@ -23,11 +23,12 @@ type OptionsStore = {
 
 const App: Component = () => {
   const [cellText, setCellText] = createSignal<string>("");
-  const [currentProfile, setCurrentProfile] = createSignal<Profile | null>(
-    null
-  );
+  const [currentProfileID, setCurrentProfileID] = createSignal<
+    string | null | undefined
+  >(null);
 
-  const isEditing = () => null !== currentProfile();
+  const isEditing = () =>
+    currentProfileID()?.length > 0 && currentProfileID() !== "new";
 
   const [options, setOptions] = createStore<OptionsStore>({
     rows: 10,
@@ -52,16 +53,16 @@ const App: Component = () => {
     };
     setOptions("profiles", (profiles) => [...profiles, profile]);
 
-    setCurrentProfile(profile);
+    setCurrentProfileID(profile.id);
   };
 
   const editCurrentProfile = () => {
-    if (!currentProfile()) {
+    if (!isEditing()) {
       return;
     }
 
     const updatedProfiles = options.profiles.map((p) => {
-      if (p.id === currentProfile().id) {
+      if (p.id === currentProfileID()) {
         return {
           ...p,
           content: cellText(),
@@ -73,15 +74,15 @@ const App: Component = () => {
   };
 
   const deleteCurrentProfile = () => {
-    if (!currentProfile()) {
+    if (!isEditing()) {
       return;
     }
 
     setOptions(
       "profiles",
-      options.profiles.filter((profile) => profile.id !== currentProfile().id)
+      options.profiles.filter((profile) => profile.id !== currentProfileID())
     );
-    setCurrentProfile(null);
+    setCurrentProfileID(null);
   };
 
   const tableStructure = () => {
@@ -160,13 +161,12 @@ const App: Component = () => {
     }
 
     const deserializedOptions = JSON.parse(rawStoredOptions);
-
-    if (deserializedOptions.profiles.length > 0) {
-      setCurrentProfile(deserializedOptions.profiles[0]);
-      setCellText(deserializedOptions.profiles[0].content);
-    }
-
     setOptions(deserializedOptions);
+
+    setCurrentProfileID(options?.profiles?.[0]?.id);
+    if (options.profiles.length > 0) {
+      setCellText(options.profiles[0].content);
+    }
   });
 
   createEffect(() => {
@@ -181,18 +181,18 @@ const App: Component = () => {
           <div class="options">
             <label>
               <select
-                value={currentProfile() ? currentProfile().id : "new"}
+                value={isEditing() ? currentProfileID() : "new"}
                 onChange={(e) => {
                   const profileId = e.target.value;
                   if (profileId === "new") {
-                    setCurrentProfile(null);
+                    setCurrentProfileID(null);
                     return;
                   }
                   const profile = options.profiles.find(
                     (profile) => profile.id === profileId
                   );
                   if (profile) {
-                    setCurrentProfile(profile);
+                    setCurrentProfileID(profile.id);
                     setCellText(profile.content);
                   }
                 }}
