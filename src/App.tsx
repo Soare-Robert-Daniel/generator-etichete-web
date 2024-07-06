@@ -377,7 +377,10 @@ const App: Component = () => {
               </svg>
               <span>Modifica profil</span>
             </button>
-            <button classList={{ hide: isEditing() }} onclick={saveProfile}>
+            <button
+              classList={{ hide: isEditing() }}
+              onClick={() => saveProfile()}
+            >
               <svg
                 width="800px"
                 height="800px"
@@ -475,7 +478,7 @@ const App: Component = () => {
         </textarea>
         <div class="container">
           <button
-            onclick={() => insertTag("$astazi")}
+            onClick={() => insertTag("$astazi")}
             classList={{
               default: true,
               "tag-present": cellText().includes("$astazi"),
@@ -498,10 +501,10 @@ const App: Component = () => {
       <table style={{ "--cell-font-size": options.fontSize }}>
         <tbody>
           <For each={tableStructure()}>
-            {(row, rowIndex) => (
+            {(row) => (
               <tr>
                 <For each={row}>
-                  {(cell, columnIndex) => (
+                  {() => (
                     <td>
                       <span class="cell">{displayContent()}</span>
                     </td>
