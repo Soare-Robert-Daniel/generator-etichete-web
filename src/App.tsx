@@ -80,7 +80,7 @@ const App: Component = () => {
 
     setOptions(
       "profiles",
-      options.profiles.filter((profile) => profile.id !== currentProfileID())
+      options.profiles.filter((profile) => profile.id !== currentProfileID()),
     );
     setCurrentProfileID(null);
   };
@@ -105,10 +105,10 @@ const App: Component = () => {
 
     const paddedNumber = (n: number) => n.toString().padStart(2, "0");
     const formattedToday = `${paddedNumber(today.getDate())}.${paddedNumber(
-      today.getMonth() + 1
+      today.getMonth() + 1,
     )}.${today.getFullYear()}`;
     const formattedTomorrow = `${paddedNumber(
-      tomorrow.getDate()
+      tomorrow.getDate(),
     )}.${paddedNumber(tomorrow.getMonth() + 1)}.${tomorrow.getFullYear()}`;
 
     return content
@@ -189,7 +189,7 @@ const App: Component = () => {
                     return;
                   }
                   const profile = options.profiles.find(
-                    (profile) => profile.id === profileId
+                    (profile) => profile.id === profileId,
                   );
                   if (profile) {
                     setCurrentProfileID(profile.id);
@@ -525,7 +525,7 @@ const App: Component = () => {
             class="btn-filled"
             onClick={() => {
               const fileInput = document.querySelector(
-                "input[type=file]"
+                "input[type=file]",
               ) as HTMLInputElement;
               if (fileInput.files && fileInput.files.length > 0) {
                 uploadProfiles(fileInput.files[0]);
